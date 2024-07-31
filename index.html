@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TicTacToe-AI</title>
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=1024, initial-scale=1">
+    <script src="script.js" defer></script>
+    <link rel="shortcut icon" href="tic-tac-toe.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <h1 id="title">Tic Tac Toe - AI</h1>
+    <div class="choice-screen" id="choiceScreen">
+      <h1>Choose <span class="X">X</span> or <span class="O">O</span></h1>
+      <div>
+        <button id="X" class="choice-button">X</button>
+        <button id="O" class="choice-button">O</button>
+      </div>
+    </div>
+    <div class="play-grid" id="playGrid" style="display: none;">
+      <div class="cell" id="b0"></div>
+      <div class="cell" id="b1"></div>
+      <div class="cell" id="b2"></div>
+      <div class="cell" id="b3"></div>
+      <div class="cell" id="b4"></div>
+      <div class="cell" id="b5"></div>
+      <div class="cell" id="b6"></div>
+      <div class="cell" id="b7"></div>
+      <div class="cell" id="b8"></div>
+    </div>
+    <div class="endgame">
+      <div class="text"></div>
+    </div>
+    <button id="replay" style="display: none;">New Game</button>
+  </body>
+</html>
