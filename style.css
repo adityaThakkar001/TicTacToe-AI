@@ -186,4 +186,18 @@ body {
 .res{
     font-family: "Quicksand";
 }
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+@media (min-width: 769px) {
+    .container {
+        width: 70%;
+        margin: 0 auto;
+    }
+}
+
 
