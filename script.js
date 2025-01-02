@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return indexes;
       };
       this.gameOver = function () {
-        // Check horizontally
+        // Checking horizontally
         for (let i = 0; i <= 6; i += 3) {
           if (
             this.board[i] !== 0 &&
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Check vertically
+        // Checking vertically
         for (let i = 0; i <= 2; i++) {
           if (
             this.board[i] !== 0 &&
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Check diagonally
+        // Checking diagonally
         if (
           this.board[4] !== 0 &&
           ((this.board[0] === this.board[4] &&
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return true;
         }
 
-        // Check for draw
+        // Checking for draw
         if (this.emptyCells().length === 0) {
           this.result = "draw";
           return true;
@@ -85,48 +85,57 @@ document.addEventListener("DOMContentLoaded", () => {
       let game = {};
       let nextMove;
       this.AISymbol = "";
-      let _this = this;
       this.plays = function (_game) {
         game = _game;
       };
-      this.minimax = function(state, depth, isMaximizing) {
+      this.minimax = function (state, depth, isMaximizing) {
         if (state.gameOver() || depth === 0) {
           return game.score(state);
         }
-      
-        const currentPlayer = isMaximizing ? this.AISymbol : (this.AISymbol === 'X' ? 'O' : 'X');
+
+        const currentPlayer = isMaximizing
+          ? this.AISymbol
+          : this.AISymbol === "X"
+          ? "O"
+          : "X";
         let bestScore = isMaximizing ? -Infinity : Infinity;
+        let bestMove = null;
         const moves = state.emptyCells();
-      
+
         for (let i = 0; i < moves.length; i++) {
           const newState = new State(state, {
             turn: currentPlayer,
-            position: moves[i]
+            position: moves[i],
           });
           const score = this.minimax(newState, depth - 1, !isMaximizing);
-          
+
           if (isMaximizing) {
             if (score > bestScore) {
               bestScore = score;
-              if (depth === 3) nextMove = moves[i];
+              bestMove = moves[i];
             }
           } else {
             if (score < bestScore) {
               bestScore = score;
+              bestMove = moves[i];
             }
           }
         }
-      
-        return bestScore;
+        if (depth === 9) {
+          return { score: bestScore, move: bestMove }; 
+        }
+
+        return bestScore; 
       };
 
       this.takeMove = function (_state) {
         console.log("AI thinking...");
-        this.minimax(_state, 3, true);
-        console.log("AI chose move:", nextMove);
+        const result = this.minimax(_state, 9, true);
+        const bestMove = result.move; 
+        console.log("AI chose move:", bestMove);
         let newState = new State(_state, {
           turn: this.AISymbol,
-          position: nextMove
+          position: bestMove,
         });
         game.advanceTo(newState);
       };
@@ -160,10 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
             cell.innerHTML = `<span class="symbol ${board[i].toLowerCase()}">${
               board[i]
             }</span>`;
-            //cell.classList.remove("empty");
           } else {
             cell.innerHTML = "";
-            //cell.classList.add("empty");
           }
         }
 
@@ -182,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
 
-      // check to see if the move is valid before proceeding
       this.isValid = function (space) {
         if (this.currentState.board[space] == 0) {
           return true;
@@ -190,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return false;
         }
       };
-      this.score = function(_state) {
+      this.score = function (_state) {
         if (_state.result !== "active") {
           if (_state.result === this.ai.AISymbol) {
             return 10 - _state.depth;
@@ -200,44 +206,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return 0;
           }
         }
-        return _state.depth % 2 === 0 ? -1 : 1; // Slight preference for odd-depth moves
+        return _state.depth % 2 === 0 ? -1 : 1; 
       };
     }
   }
-
-  /*let findMaxIndex = function (arr) {
-    let indexOfMax = 0;
-    let max = 0;
-
-    // find the index of the max score;
-    if (arr.length > 1) {
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i] >= max) {
-          indexOfMax = i;
-          max = arr[i];
-        }
-      }
-    }
-
-    return indexOfMax;
-  };
-
-  let findMinIndex = function (arr) {
-    let indexOfMin = 0;
-    let min = 0;
-
-    // find the index of the max score;
-    if (arr.length > 1) {
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i] <= min) {
-          indexOfMin = i;
-          min = arr[i];
-        }
-      }
-    }
-
-    return indexOfMin;
-  };*/
 
   let myAI;
   let myGame;
@@ -283,7 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fadeOut(document.querySelector(".choice-screen"), 600, function () {
       fadeIn(document.querySelector(".play-grid"), 600, function () {
         fadeIn(document.querySelector("#replay"), 1000, function () {
-          // if comp is X, proceed with first move after fadeIn is complete.
           if (myAI.AISymbol === "X") {
             myGame.ai.takeMove(myGame.currentState);
             myGame.updateUI();
@@ -294,8 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // define who will play X and who will play O based on user input, then display the board.
-  // Add an event listener for the button click
   document.querySelectorAll(".choice-button").forEach(function (button) {
     button.addEventListener("click", function () {
       playerSymbol = this.id;
@@ -312,12 +281,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Add event listeners for the board spaces
   document.querySelectorAll(".cell").forEach(function (space) {
     space.addEventListener("click", function () {
       let num = this.id;
       console.log(num);
-      num = num.substring(1); // Adjust the slicing if necessary
+      num = num.substring(1); 
       if (playerTurn && myGame.isValid(num)) {
         let newState = new State(myGame.currentState, {
           turn: playerSymbol,
