@@ -5,7 +5,6 @@ This repository contains a web-based implementation of the classic Tic-Tac-Toe g
 [Try it out now](https://adityathakkar001.github.io/TicTacToe-AI/)
 
  ## Clone the Repository
-
-    ```sh
-    git clone https://github.com/adityaThakkar001/TicTacToe-AI.git
-    ```
+ ```sh
+git clone https://github.com/adityaThakkar001/TicTacToe-AI.git
+ ```
